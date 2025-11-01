@@ -25,7 +25,7 @@ class InterviewEvaluationService:
             logger.error(f"No interview data found for interview_id: {interview_id}")
             return {"status": "error", "message": "Interview data not found"}
         
-        logger.info(f"Interview data found: {interview_data}")
+        logger.info(f"Interview data found: {interview_id}")
 
         technical_scores = {}
         audio_results = {}
@@ -34,7 +34,7 @@ class InterviewEvaluationService:
             question = convo["question"]
             answer = convo["answer_transcript"]
             result = await self.evaluation_service.evaluate_answer(question, answer)
-            logger.info(f"Evaluation result for question '{question}': {result}")
+            logger.info(f"Evaluation result for question {qs_count}")
             technical_scores[qs_count] = result
             qs_count += 1
         
@@ -46,8 +46,8 @@ class InterviewEvaluationService:
             audio_results[qs_count] = result
             qs_count += 1
 
-        aggregated_scores = self.scoring_service.aggregate(technical_scores)
-        logger.info(f"Aggregated scores: {aggregated_scores}")
+        aggregated_scores = await self.scoring_service.aggregate(technical_scores)
+        logger.info(f"Aggregated scores computed for interview_id {interview_id}")
 
         return {"status": "success",
                  "interview_result": {

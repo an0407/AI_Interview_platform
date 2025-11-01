@@ -1,7 +1,11 @@
 import statistics
+from app.agents.summarize_agents import SummaryService
 
 class ScoringService:
-    def aggregate(self, technical_scores: dict) -> dict:
+    def __init__(self):
+        self.summary_service = SummaryService()
+
+    async def aggregate(self, technical_scores: dict) -> dict:
         """
         Aggregate all question results into an overall evaluation summary.
         """
@@ -36,22 +40,23 @@ class ScoringService:
         strengths = list(set(strengths))
         improvements = list(set(improvements))
 
-        # Build final summarized feedback paragraph
-        summary_feedback = (
-            f"Overall, the candidate shows a technical score of {averages['technical_score']}/10, "
-            f"depth score of {averages['depth_score']}/10, clarity score of {averages['clarity_score']}/10, "
-            f"and practical understanding score of {averages['practical_score']}/10. "
-            f"The overall performance score is {overall}/10. "
-            f"Key strengths include {', '.join(strengths[:3]) if strengths else 'general competence'}, "
-            f"while improvement areas include {', '.join(improvements[:3]) if improvements else 'minor refinements'}."
-        )
+        summarized_strengths = await self.summary_service.summarize_strengths(strengths)
+        summarized_improvements = await self.summary_service.summarize_improvements(improvements)
+        summarized_feedback = await self.summary_service.summarize_feedback(" ".join(feedbacks))
 
-        # Return structured report
+        # summary_feedback = (
+        #     f"Overall, the candidate achieved an average technical score of {averages['technical_score']}/10 "
+        #     f"and an overall score of {overall}/10. "
+        #     f"{summarized_feedback}\n\n"
+        #     f"**Strengths Summary:** {summarized_strengths}\n\n"
+        #     f"**Improvement Summary:** {summarized_improvements}"
+        # )
+
         return {
             "overall_score": overall,
             "criteria_scores": averages,
-            "strengths": strengths,
-            "improvement_areas": improvements,
-            "combined_feedback": " ".join(feedbacks),
-            "summary": summary_feedback
+            "strengths": summarized_strengths,
+            "improvement_areas": summarized_improvements,
+            "combined_feedback": summarized_feedback,
+            #"summary": summary_feedback
         }
