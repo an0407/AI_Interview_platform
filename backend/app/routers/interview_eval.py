@@ -17,6 +17,6 @@ async def evaluate_interview(interview_id: str, db=Depends(get_database)):
 
     result = await InterviewEvaluationService(db).evaluate(interview_id)
 
-    logger.info(f"Evaluation result for interview_id {interview_id}: {result}")
+    logger.info(f"Evaluation completed for interview_id {interview_id}")
 
     return result

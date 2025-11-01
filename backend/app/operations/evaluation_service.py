@@ -42,7 +42,7 @@ class InterviewEvaluationService:
         for convo in interview_data["conversation"]:
             audio_file_path = convo["answer_audio_path"]
             result = self.audio_service.analyze_audio(audio_file_path)
-            logger.info(f"Audio analysis result for file '{audio_file_path}': {result}")
+            logger.info(f"Audio analysis result for file '{audio_file_path}'")
             audio_results[qs_count] = result
             qs_count += 1
 
