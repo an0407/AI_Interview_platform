@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from app.routes import interview_routes
 
-app = FastAPI(title="Interview Management System")
+app = FastAPI(title="Interview Platform API")
 
-# Include routes
 app.include_router(interview_routes.router)
 
 @app.get("/")
