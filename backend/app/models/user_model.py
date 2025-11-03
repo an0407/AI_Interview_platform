@@ -6,3 +6,6 @@ class User(BaseModel):
     name: str
     email: str
     role: str  # "manager" or "employee"
+from app.db.mongo import db
+
+users_collection = db["users"]
