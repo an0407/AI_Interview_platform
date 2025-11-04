@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const UserForm = () => {
   const [formData, setFormData] = useState({
+    user_id: '',
     name: "",
     email: "",
     password: "",
@@ -18,18 +20,21 @@ const UserForm = () => {
     e.preventDefault();
     setMessage("Submitting...");
 
+    const dataToSend = { ...formData, user_id: uuidv4() };
+
     try {
-      const response = await fetch("http://127.0.0.1:8000/users/", {
+      const response = await fetch("http://192.168.1.10:8000/users/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (response.ok) {
         setMessage("✅ User created successfully!");
-        setFormData({ name: "", email: "", password: "", role: "employee" });
+        setFormData({ user_id: '', name: "", email: "", password: "", role: "employee" });
       } else {
-        setMessage("❌ Failed to create user. Please check inputs.");
+        const errorData = await response.json();
+        setMessage(`❌ Failed to create user: ${errorData.detail[0].msg}`);
       }
     } catch (error) {
       setMessage("⚠️ Error connecting to server.");

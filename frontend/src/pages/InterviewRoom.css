@@ -1,0 +1,345 @@
+.interview-room {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecf1 100%);
+}
+
+.room-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.room-header h1 {
+  margin: 0;
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.progress-indicator {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  animation: pulse 2s infinite;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.room-content {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-container {
+  background: white;
+  padding: 50px 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.error-message {
+  color: #e63946;
+  font-size: 18px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.question-section {
+  margin-bottom: 50px;
+}
+
+.question-section h2 {
+  color: #1a1a2e;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.question-box {
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+  border: 2px solid #e8e8ff;
+  border-radius: 12px;
+  padding: 40px;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+}
+
+.question-box p {
+  font-size: 20px;
+  line-height: 1.7;
+  color: #1a1a2e;
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+.recording-section {
+  margin-bottom: 50px;
+  padding: 30px;
+  background: linear-gradient(135deg, #fef8f0 0%, #fff5e6 100%);
+  border-radius: 12px;
+  border: 2px solid #ffe0b2;
+}
+
+.recording-section h3 {
+  color: #1a1a2e;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+}
+
+.status-indicator {
+  text-align: center;
+  margin-bottom: 20px;
+  min-height: 32px;
+}
+
+.status-message {
+  font-size: 16px;
+  font-weight: 600;
+  color: #667eea;
+  margin: 0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.status-message.recording {
+  color: #ff6b6b;
+  animation: pulse-status 1s infinite;
+}
+
+.status-message.submitted {
+  color: #ffc107;
+  animation: pulse-status 1s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-status {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.recording-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.record-btn {
+  padding: 16px 35px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 200px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.record-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+}
+
+.record-btn.recording {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+  animation: blink 1s infinite;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.record-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.audio-playback {
+  text-align: center;
+  padding: 15px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.audio-playback p {
+  color: #1a1a2e;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+}
+
+.audio-playback audio {
+  width: 100%;
+  max-width: 400px;
+}
+
+.submit-answer-btn {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 15px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  display: block;
+}
+
+.submit-answer-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+}
+
+.submit-answer-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submit-answer-btn.loading {
+  background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+  opacity: 0.8;
+  cursor: wait;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.end-interview-btn,
+.back-btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 160px;
+}
+
+.end-interview-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.end-interview-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+}
+
+.back-btn {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+}
+
+.back-btn:hover:not(:disabled) {
+  background: #f0f4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.end-interview-btn:disabled,
+.back-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.evaluating-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}

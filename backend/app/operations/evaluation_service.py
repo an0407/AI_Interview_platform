@@ -12,7 +12,7 @@ class InterviewEvaluationService:
 
     def __init__(self, db):
         self.db = db
-        self.collection = db["interview_conversations"]
+        self.collection = db["conversations"]
         self.evaluation_service = TextEvaluationService()
         self.audio_service = AudioEvaluationService()
         self.scoring_service = ScoringService()

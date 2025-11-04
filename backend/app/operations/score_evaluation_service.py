@@ -19,12 +19,17 @@ class ScoringService:
         averages = {}
         for m in metrics:
             try:
-                averages[m] = round(statistics.mean(q[m] for q in question_results), 2)
+                avg = statistics.mean(q[m] for q in question_results)
+                # Scale from 1-10 to 0-100 for frontend display
+                averages[m] = round(avg * 10, 2)
             except Exception:
                 averages[m] = 0.0
 
-        # Calculate overall average
-        overall = round(statistics.mean(averages.values()), 2)
+        # Calculate overall average (scale to 0-100)
+        try:
+            overall = round(statistics.mean(q.get("overall_score", 0) for q in question_results), 2)
+        except Exception:
+            overall = 0.0
 
         # Collect all strengths and improvements across questions
         strengths = []

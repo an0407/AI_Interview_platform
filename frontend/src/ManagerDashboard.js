@@ -1,75 +1,44 @@
-import React, { useEffect, useState } from "react";
-import { Box, Typography, Paper, CircularProgress, List, ListItem, ListItemText, Button } from "@mui/material";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { getInterviewsByManagerId, getEmployees } from './services/api';
+import AssignInterviewForm from './components/AssignInterviewForm';
 
-export default function ManagerDashboard() {
+function ManagerDashboard({ user }) {
+  const [interviews, setInterviews] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const res = await axios.get("http://127.0.0.1:8000/users/employees/");
-        const employeeList = res.data.filter((u) => u.role === "employee");
-        setEmployees(employeeList);
-      } catch (err) {
-        console.error("Failed to fetch employees:", err);
-      } finally {
-        setLoading(false);
-      }
+    const fetchDashboardData = async () => {
+      const [interviewData, employeeData] = await Promise.all([
+        getInterviewsByManagerId(user._id),
+        getEmployees(),
+      ]);
+      setInterviews(interviewData);
+      setEmployees(employeeData);
     };
 
-    fetchEmployees();
-  }, []);
+    fetchDashboardData();
+  }, [user]);
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #2575fc 0%, #6a11cb 100%)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        p: 3,
-      }}
-    >
-      <Paper
-        elevation={6}
-        sx={{
-          width: 500,
-          p: 4,
-          borderRadius: 4,
-          background: "rgba(255,255,255,0.9)",
-        }}
-      >
-        <Typography variant="h4" textAlign="center" gutterBottom fontWeight="bold" color="primary">
-          Manager Dashboard
-        </Typography>
-
-        {loading ? (
-          <CircularProgress sx={{ display: "block", m: "auto", mt: 3 }} />
-        ) : (
-          <List>
-            {employees.map((emp) => (
-              <ListItem key={emp._id} divider>
-                <ListItemText primary={emp.name} secondary={emp.email} />
-              </ListItem>
-            ))}
-          </List>
-        )}
-
-        <Button
-          onClick={() => navigate("/")}
-          variant="contained"
-          color="secondary"
-          fullWidth
-          sx={{ mt: 3, textTransform: "none" }}
-        >
-          Logout
-        </Button>
-      </Paper>
-    </Box>
+    <div>
+      <h2>Manager Dashboard</h2>
+      <p>You have created {interviews.length} interviews.</p>
+      <AssignInterviewForm managerId={user._id} employees={employees} />
+      <h3>Your Interviews:</h3>
+      {interviews.length === 0 ? (
+        <p>You have not created any interviews yet.</p>
+      ) : (
+        <ul>
+          {interviews.map((interview) => (
+            <li key={interview._id}>
+              <p>Status: {interview.status}</p>
+              <p>Assigned to: {interview.employee_ids.join(', ')}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
+
+export default ManagerDashboard;

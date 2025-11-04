@@ -1,30 +1,55 @@
-const BASE_URL = "http://localhost:8000/interviews";
+import axios from 'axios';
 
-export async function assignInterview(data) {
-  const res = await fetch(`${BASE_URL}/assign`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  return await res.json();
-}
+const API_URL = 'http://192.168.1.10:8000';
 
-export async function getAllInterviews() {
-  const res = await fetch(`${BASE_URL}/`);
-  return await res.json();
-}
+// User-related API calls
+export const getUsers = async () => {
+  const response = await axios.get(`${API_URL}/users/`);
+  return response.data;
+};
 
-export async function getInterviewById(id) {
-  const res = await fetch(`${BASE_URL}/${id}`);
-  return await res.json();
-}
+export const createUser = async (userData) => {
+  const response = await axios.post(`${API_URL}/users/`, userData);
+  return response.data;
+};
 
-export async function getInterviewsByEmployeeId(employeeId) {
-  const res = await fetch(`${BASE_URL}/employee/${employeeId}`);
-  return await res.json();
-}
+export const loginUser = async (credentials) => {
+  const response = await axios.post(`${API_URL}/users/login/`, credentials);
+  return response.data;
+};
 
-export async function getInterviewsByManagerId(managerId) {
-  const res = await fetch(`${BASE_URL}/manager/${managerId}`);
-  return await res.json();
-}
+export const getEmployees = async () => {
+  const response = await axios.get(`${API_URL}/users/employees`);
+  return response.data;
+};
+
+// Interview-related API calls
+export const assignInterview = async (interviewData) => {
+  const response = await axios.post(`${API_URL}/interviews/assign`, interviewData);
+  return response.data;
+};
+
+export const getAllInterviews = async () => {
+  const response = await axios.get(`${API_URL}/interviews/`);
+  return response.data;
+};
+
+export const getInterviewById = async (id) => {
+  const response = await axios.get(`${API_URL}/interviews/${id}`);
+  return response.data;
+};
+
+export const getInterviewsByEmployeeId = async (employeeId) => {
+  const response = await axios.get(`${API_URL}/interviews/employee/${employeeId}`);
+  return response.data;
+};
+
+export const getInterviewsByManagerId = async (managerId) => {
+  const response = await axios.get(`${API_URL}/interviews/manager/${managerId}`);
+  return response.data;
+};
+
+export const updateInterviewStatus = async (id, status) => {
+  const response = await axios.put(`${API_URL}/interviews/${id}/status`, { status });
+  return response.data;
+};

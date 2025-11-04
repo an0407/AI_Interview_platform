@@ -1,8 +1,9 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+# This file is deprecated. Use app/database/mongo_db.py instead.
+# This import is kept for backward compatibility only.
 
-MONGO_URL = "mongodb+srv://homework_ai_dev:homework_ai_dev@homework-assistant-dev.g6aymho.mongodb.net/?retryWrites=true&w=majority"
-client = AsyncIOMotorClient(MONGO_URL)
-db = client["ai_interview_platform"]
+from app.database.mongo_db import get_database
 
-# Define collection
-user_collection = db["users"]
+# Get the async database instance
+# Note: This should only be used in async context where MongoDB is already connected
+async def get_db():
+    return get_database()

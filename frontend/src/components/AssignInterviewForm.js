@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { assignInterview } from '../services/api.js';
 
-function AssignInterviewForm() {
-  const [managerId, setManagerId] = useState('');
-  const [employeeIds, setEmployeeIds] = useState('');
+function AssignInterviewForm({ managerId, employees }) {
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [instructions, setInstructions] = useState('');
 
   const handleSubmit = async (e) => {
@@ -11,8 +10,12 @@ function AssignInterviewForm() {
 
     const data = {
       manager_id: managerId,
-      employee_ids: employeeIds.split(',').map(id => id.trim()),
-      instructions,
+      employee_ids: selectedEmployees,
+      interview_instructions: {
+        time: '30 minutes', // You can make this dynamic
+        tech_stacks: ['React', 'Node.js'], // You can make this dynamic
+        notes: instructions,
+      },
     };
 
     const result = await assignInterview(data);
@@ -24,23 +27,23 @@ function AssignInterviewForm() {
       <h2>Assign Interview</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Manager ID:</label><br />
-          <input
-            type="text"
-            value={managerId}
-            onChange={(e) => setManagerId(e.target.value)}
+          <label>Assign to:</label><br />
+          <select
+            multiple
+            value={selectedEmployees}
+            onChange={(e) =>
+              setSelectedEmployees(
+                Array.from(e.target.selectedOptions, (option) => option.value)
+              )
+            }
             required
-          />
-        </div>
-
-        <div>
-          <label>Employee IDs (comma separated):</label><br />
-          <input
-            type="text"
-            value={employeeIds}
-            onChange={(e) => setEmployeeIds(e.target.value)}
-            required
-          />
+          >
+            {employees.map((employee) => (
+              <option key={employee._id} value={employee._id}>
+                {employee.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

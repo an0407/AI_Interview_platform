@@ -46,4 +46,17 @@ class TextEvaluationService:
         except json.JSONDecodeError:
             result = {"technical_score": 0, "feedback": "Failed to parse response"}
 
+        # Calculate overall_score from the 4 metrics (1-10 scale)
+        # Convert to 0-100 scale for frontend display
+        try:
+            avg_score = (
+                result.get("technical_score", 0) +
+                result.get("depth_score", 0) +
+                result.get("clarity_score", 0) +
+                result.get("practical_score", 0)
+            ) / 4
+            result["overall_score"] = round(avg_score * 10, 2)  # Convert 1-10 to 0-100
+        except Exception as e:
+            result["overall_score"] = 0
+
         return result
