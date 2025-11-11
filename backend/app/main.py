@@ -5,7 +5,6 @@ from app.routes.user_routes import router as user_router
 from app.routes.interview_routes import router as interview_routes_router
 from app.routers.interview_eval import eval_router
 from app.routers.interview_router import router as interview_router
-from app.routers.livekit_router import router as livekit_router
 from app.database.mongo_db import connect_to_mongo, close_mongo_connection
 from app.core.config import settings
 import logging
@@ -44,7 +43,6 @@ app.include_router(user_router, prefix="/users", tags=["Users"])
 app.include_router(interview_routes_router, prefix="/interviews", tags=["Interviews"])
 app.include_router(interview_router, prefix="/interview", tags=["Interview"])
 app.include_router(eval_router, prefix="/interview-eval", tags=["Interview Evaluation"])
-app.include_router(livekit_router, prefix="/livekit", tags=["LiveKit"])
 
 @app.get("/")
 def root():

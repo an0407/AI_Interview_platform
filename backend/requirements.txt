@@ -13,4 +13,7 @@ langchain-openai==0.3.28
 openai==1.97.0
 gTTS==2.5.4
 whisper-timestamped @ git+https://github.com/linto-ai/whisper-timestamped
-livekit
+librosa==0.10.2
+langchain-community==0.3.26
+python-multipart==0.0.6
+numpy>=1.24.0

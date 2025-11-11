@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from livekit import api
+from livekit.api import AccessToken, VideoGrants
 from app.core.config import settings
 
 router = APIRouter(tags=["LiveKit"])
@@ -14,11 +14,11 @@ async def get_livekit_token(user_name: str, interview_id: str):
 
     try:
         token = (
-            api.AccessToken(settings.LIVEKIT_API_KEY, settings.LIVEKIT_API_SECRET)
+            AccessToken(settings.LIVEKIT_API_KEY, settings.LIVEKIT_API_SECRET)
             .with_identity(user_name)
             .with_name(f"Interview-{interview_id}")
             .with_grants(
-                api.VideoGrants(
+                VideoGrants(
                     room_join=True,
                     room=f"interview_{interview_id}",
                     can_publish=True,
