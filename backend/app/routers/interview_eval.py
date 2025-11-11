@@ -61,13 +61,61 @@ async def evaluate_interview(interview_id: str, db=Depends(get_database), force_
 
     logger.info(f"Computing/recalculating evaluation for interview {interview_id}")
 
+    # Mark as in-progress
+    evaluation_results_collection = db["evaluation_results"]
+    await evaluation_results_collection.update_one(
+        {"interview_id": interview_id},
+        {
+            "$set": {
+                "status": "in_progress",
+                "error": None
+            }
+        },
+        upsert=True
+    )
+
     try:
         result = await InterviewEvaluationService(db).evaluate(interview_id)
         logger.info(f"Evaluation completed for interview_id {interview_id}")
+
+        # Store the results in the database
+        if result.get("status") == "success":
+            from datetime import datetime
+            await evaluation_results_collection.update_one(
+                {"interview_id": interview_id},
+                {
+                    "$set": {
+                        "status": "completed",
+                        "interview_result": result.get("interview_result"),
+                        "error": None,
+                        "updated_at": datetime.utcnow()
+                    },
+                    "$setOnInsert": {
+                        "created_at": datetime.utcnow()
+                    }
+                },
+                upsert=True
+            )
+            logger.info(f"Evaluation results stored in database for interview {interview_id}")
+
         return result
     except Exception as e:
+        error_msg = f"Evaluation failed: {str(e)}"
         logger.error(f"Evaluation failed for interview {interview_id}: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Evaluation failed: {str(e)}")
+
+        # Store error in database
+        await evaluation_results_collection.update_one(
+            {"interview_id": interview_id},
+            {
+                "$set": {
+                    "status": "failed",
+                    "error": error_msg
+                }
+            },
+            upsert=True
+        )
+
+        raise HTTPException(status_code=500, detail=error_msg)
 
 
 @eval_router.post("/re-evaluate/{interview_id}")

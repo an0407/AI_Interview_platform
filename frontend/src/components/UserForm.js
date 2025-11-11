@@ -23,7 +23,7 @@ const UserForm = () => {
     const dataToSend = { ...formData, user_id: uuidv4() };
 
     try {
-      const response = await fetch("http://192.168.1.10:8000/users/", {
+      const response = await fetch("http://192.168.5.99:8000/users/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend),

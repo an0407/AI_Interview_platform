@@ -22,7 +22,7 @@ app = FastAPI(title="Interview Platform API")
 # Allow frontend (React) to call backend APIs
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # your React app
+    allow_origins=["*"],  # your React app
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

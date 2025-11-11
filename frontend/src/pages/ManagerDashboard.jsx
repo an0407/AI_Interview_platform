@@ -29,8 +29,8 @@ const ManagerDashboard = () => {
     setLoading(true);
     try {
       const [interviewsRes, employeesRes] = await Promise.all([
-        fetch(`http://192.168.1.10:8000/interviews/manager/${user._id}`),
-        fetch('http://192.168.1.10:8000/users/employees'),
+        fetch(`http://192.168.5.99:8000/interviews/manager/${user._id}`),
+        fetch('http://192.168.5.99:8000/users/employees'),
       ]);
 
       if (!interviewsRes.ok || !employeesRes.ok) throw new Error('Failed to fetch data');
@@ -90,7 +90,7 @@ const ManagerDashboard = () => {
     };
 
     try {
-      const response = await fetch('http://192.168.1.10:8000/interviews/assign', {
+      const response = await fetch('http://192.168.5.99:8000/interviews/assign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(interviewData),

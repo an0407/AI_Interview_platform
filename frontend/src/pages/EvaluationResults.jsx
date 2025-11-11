@@ -18,16 +18,31 @@ const EvaluationResults = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://192.168.1.10:8000/interview-eval/evaluate/${interviewId}`
+        `http://192.168.5.99:8000/interview-eval/evaluate/${interviewId}`
       );
 
       if (!response.ok) throw new Error('Failed to fetch results');
 
       const data = await response.json();
-      setResults(data);
-      setError('');
+      console.log('Evaluation results data:', data);
+
+      // Check evaluation status
+      if (data.status === 'in_progress') {
+        setError('Evaluation is currently in progress. Please wait a few moments and refresh the page.');
+        setResults(null);
+      } else if (data.status === 'failed') {
+        setError(`Evaluation failed: ${data.message || data.error || 'Unknown error'}`);
+        setResults(null);
+      } else if (data.interview_result) {
+        // Evaluation completed successfully
+        setResults(data);
+        setError('');
+      } else {
+        setError('Evaluation results are not yet available. Please try again later.');
+        setResults(null);
+      }
     } catch (err) {
-      setError('Failed to load evaluation results');
+      setError('Failed to load evaluation results: ' + err.message);
       console.error(err);
     } finally {
       setLoading(false);

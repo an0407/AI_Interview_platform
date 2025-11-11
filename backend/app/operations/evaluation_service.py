@@ -35,15 +35,17 @@ class InterviewEvaluationService:
             answer = convo["answer_transcript"]
             result = await self.evaluation_service.evaluate_answer(question, answer)
             logger.info(f"Evaluation result for question {qs_count}")
-            technical_scores[qs_count] = result
+            # Use string keys for MongoDB compatibility
+            technical_scores[str(qs_count)] = result
             qs_count += 1
-        
+
         qs_count = 1
         for convo in interview_data["conversation"]:
             audio_file_path = convo["answer_audio_path"]
             result = self.audio_service.analyze_audio(audio_file_path)
             logger.info(f"Audio analysis result for file '{audio_file_path}'")
-            audio_results[qs_count] = result
+            # Use string keys for MongoDB compatibility
+            audio_results[str(qs_count)] = result
             qs_count += 1
 
         aggregated_scores = await self.scoring_service.aggregate(technical_scores)

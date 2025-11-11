@@ -20,7 +20,7 @@ const EmployeeDashboard = () => {
   const fetchInterviews = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://192.168.1.10:8000/interviews/employee/${user._id}`);
+      const response = await fetch(`http://192.168.5.99:8000/interviews/employee/${user._id}`);
       if (!response.ok) throw new Error('Failed to fetch interviews');
 
       const data = await response.json();
@@ -43,7 +43,7 @@ const EmployeeDashboard = () => {
     console.log('Starting interview with ID:', interviewId);
     try {
       const response = await fetch(
-        `http://192.168.1.10:8000/interviews/${interviewId}/status`,
+        `http://192.168.5.99:8000/interviews/${interviewId}/status`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
